@@ -1,0 +1,22 @@
+{
+  "name": "socks5-request",
+  "version": "0.1.0",
+  "description": "request wrapper that supports ALL_PROXY socks5h protocol",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christophgysin/socks5-request.git"
+  },
+  "author": {
+    "name": "Christoph Gysin",
+    "email": "christoph.gysin@gmail.com"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.83.0",
+    "socksv5": "git+https://github.com/christophgysin/socksv5.git#fix-normailzeargs"
+  }
+}
