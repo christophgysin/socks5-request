@@ -2,6 +2,19 @@ const request = require('request');
 const socks = require('socksv5');
 const url = require('url');
 
+function getProxyParams(proxy, useDns) {
+  return {
+    agentClass: socks.HttpAgent,
+    agentOptions: {
+      proxyHost: proxy.hostname,
+      proxyPort: proxy.port,
+      auths: [
+        socks.auth.None(),
+      ],
+      localDNS: !useDns,
+    },
+  };
+}
 
 function addProxyParams(params) {
   if (!process.env['ALL_PROXY']) {
@@ -11,17 +24,9 @@ function addProxyParams(params) {
   const proxy = url.parse(process.env['ALL_PROXY']);
 
   if (proxy.protocol === 'socks5h:') {
-    return Object.assign(params, {
-      agentClass: socks.HttpAgent,
-      agentOptions: {
-        proxyHost: proxy.hostname,
-        proxyPort: proxy.port,
-        auths: [
-          socks.auth.None(),
-        ],
-        localDNS: false,
-      },
-    });
+    return Object.assign({}, params, getProxyParams(proxy, true));
+  } else if (proxy.protocol === 'socks5:') {
+    return Object.assign({}, params, getProxyParams(proxy, false));
   } else {
     console.warning("ALL_PROXY: protocol not supported! (%s)", proxy.protocol);
     return params;
